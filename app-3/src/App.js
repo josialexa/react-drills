@@ -3,16 +3,37 @@ import logo from "./logo.svg";
 import "./App.css";
 
 class App extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      items: ['ice cream', 'spaghetti', 'dog', 'nice', 'hot dog', 'cat', 'catherine'],
+      filteredItems: ['ice cream', 'spaghetti', 'dog', 'nice', 'hot dog', 'cat', 'catherine'],
+      text: ''
+    }
+  }
+
+  handleChange(value) {
+    let rgx = new RegExp(value, "i")
+    let temp = [...this.state.items].filter(v => rgx.test(v))
+
+    this.setState({filteredItems: temp,
+                    text: value})
+  }
+
   render() {
+    const listItems = this.state.filteredItems.map(v => {
+      return <h1 key={v}>{v}</h1>
+    })
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+        <div>
+          <input
+            placeholder='Type here...'
+            onChange={(e) => this.handleChange(e.target.value)}
+            value={this.state.text}></input>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div>{listItems}</div>
       </div>
     );
   }
